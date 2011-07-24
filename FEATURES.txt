@@ -1,0 +1,20 @@
+
+PassthruProxy
+  responds to requests by forwarding to a given responder
+  responds to requests
+  forwards to our API server
+  HTTP header handling
+    transforms back properly
+  query parameters
+    forwards the query parameters
+  request path
+    forwards the request path
+  headers
+    forwards the headers
+  request method
+    forwards GET requests
+    forwards POST requests
+    forwards POST requests
+
+Finished in 0.06414 seconds
+10 examples, 0 failures

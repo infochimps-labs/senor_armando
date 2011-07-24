@@ -1,0 +1,8 @@
+app_name:       simple_goliath_skeleton
+# forwarder:      http://127.0.0.1:9002
+# forwarder:      http://www.postbin.org
+forwarder:      http://unicodesnowmanforyou.com
+
+statsd_logger:
+  host:         localhost
+  port:         8125
