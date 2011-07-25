@@ -12,7 +12,7 @@ Gem::Specification.new do |s|
   s.date = %q{2011-07-25}
   s.description = %q{Helper middlewares for a Goliath (http://goliath.io/) app as used in Infochimps Planet of the APIs}
   s.email = %q{coders@infochimps.org}
-  s.executables = [%q{armando_echo.rb}, %q{armando_elsewhere.rb}, %q{armando_proxy.rb}, %q{create_gemfile_jail.rb}]
+  s.executables = [%q{armando_echo.rb}, %q{armando_elsewhere.rb}, %q{armando_gemfile_jail.rb}, %q{armando_proxy.rb}]
   s.extra_rdoc_files = [
     "LICENSE.txt",
     "README.md"
@@ -29,8 +29,8 @@ Gem::Specification.new do |s|
     "VERSION",
     "bin/armando_echo.rb",
     "bin/armando_elsewhere.rb",
+    "bin/armando_gemfile_jail.rb",
     "bin/armando_proxy.rb",
-    "bin/create_gemfile_jail.rb",
     "config/app.example.yaml",
     "config/app.rb",
     "config/app.yaml",
