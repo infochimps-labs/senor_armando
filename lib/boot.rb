@@ -1,9 +1,13 @@
-require File.expand_path(File.join(File.dirname(__FILE__), 'goliath_skeleton/use_gemfile_jail'))
-
+module Goliath
+  ::Goliath::ROOT_DIR = File.expand_path(File.join(File.dirname(__FILE__), '../..')) unless defined?(::Goliath::ROOT_DIR)
+  def self.root_path(*dirs)
+    File.join(::Goliath::ROOT_DIR, *dirs)
+  end
+end
 $LOAD_PATH.unshift(Goliath.root_path("lib")) unless $LOAD_PATH.include?(Goliath.root_path("lib"))
-$LOAD_PATH.unshift(Goliath.root_path("app")) unless $LOAD_PATH.include?(Goliath.root_path("app"))
 
-require 'goliath'
+
+require File.expand_path(File.join(File.dirname(__FILE__), 'senor_armando/use_gemfile_jail'))
 require 'em-http'
 require 'em-synchrony/em-http'
 #
@@ -13,7 +17,3 @@ require 'configliere'
 #
 require 'goliath/rack/exception_handler'
 require 'goliath/rack/errors'
-
-Settings.define :app_name, :default => File.basename($0, '.rb'), :description => 'Name to key on for tracer stats, statsd metrics, etc.'
-Settings.read(Goliath.root_path('config/app.yaml'))
-Settings.resolve!

@@ -1,16 +1,16 @@
-require File.join(File.dirname(__FILE__), 'lib/goliath_skeleton/use_gemfile_jail')
+require File.join(File.dirname(__FILE__), 'lib/senor_armando/use_gemfile_jail')
 require 'rake'
 
-require 'goliath_skeleton/tasks'
+require 'senor_armando/tasks'
 
 require 'jeweler'
 Jeweler::Tasks.new do |gem|
   # gem is a Gem::Specification... see http://docs.rubygems.org/read/chapter/20 for more options
-  gem.name                  = "goliath_skeleton"
-  gem.homepage              = "http://github.com/infochimps-labs/goliath_skeleton"
+  gem.name                  = "senor_armando"
+  gem.homepage              = "http://github.com/infochimps-labs/senor_armando"
   gem.license               = "MIT"
-  gem.summary               = %Q{Simple skeleton for a Goliath (http://goliath.io/) app}
-  gem.description           = %Q{Simple skeleton for a Goliath (http://goliath.io/) app}
+  gem.summary               = %Q{Helper middlewares for a Goliath (http://goliath.io/) app as used in Infochimps Planet of the APIs}
+  gem.description           = %Q{Helper middlewares for a Goliath (http://goliath.io/) app as used in Infochimps Planet of the APIs}
   gem.email                 = "coders@infochimps.org"
   gem.authors               = ["Infochimps team"]
 

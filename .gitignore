@@ -42,22 +42,8 @@ pkg
 db/*.sqlite3
 log/*.log*
 tmp/**/*
-config/database.yml
-
-public/stylesheets/compiled/*
-public/system/*
 
 ## PROJECT::SPECIFIC
-public/stylesheets/style.css
-public/stylesheets/handheld.css
-.sass-cache
-
-# gitignor'ing these files which you may happen to link in rather than gem
-lib/goliath
-lib/goliath.rb
-
-config/macaque.yaml
 
 .vendor
 .bundle
-

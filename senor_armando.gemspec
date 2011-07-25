@@ -4,18 +4,18 @@
 # -*- encoding: utf-8 -*-
 
 Gem::Specification.new do |s|
-  s.name = %q{goliath_skeleton}
-  s.version = "0.0.0"
+  s.name = %q{senor_armando}
+  s.version = "0.0.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = [%q{Infochimps team}]
-  s.date = %q{2011-07-24}
-  s.description = %q{Simple skeleton for a Goliath (http://goliath.io/) app}
+  s.date = %q{2011-07-25}
+  s.description = %q{Helper middlewares for a Goliath (http://goliath.io/) app as used in Infochimps Planet of the APIs}
   s.email = %q{coders@infochimps.org}
-  s.executables = [%q{create_gemfile_jail.rb}, %q{goliath_echo.rb}, %q{goliath_repeater.rb}]
+  s.executables = [%q{armando_echo.rb}, %q{armando_elsewhere.rb}, %q{armando_proxy.rb}, %q{create_gemfile_jail.rb}]
   s.extra_rdoc_files = [
     "LICENSE.txt",
-    "README.textile"
+    "README.md"
   ]
   s.files = [
     ".gitignore",
@@ -24,36 +24,36 @@ Gem::Specification.new do |s|
     "Gemfile",
     "Gemfile.lock",
     "LICENSE.txt",
-    "README.textile",
+    "README.md",
     "Rakefile",
     "VERSION",
-    "app/passthru_proxy.rb",
+    "bin/armando_echo.rb",
+    "bin/armando_elsewhere.rb",
+    "bin/armando_proxy.rb",
     "bin/create_gemfile_jail.rb",
-    "bin/goliath_echo.rb",
-    "bin/goliath_repeater.rb",
     "config/app.example.yaml",
     "config/app.rb",
     "config/app.yaml",
-    "goliath_skeleton.gemspec",
     "lib/boot.rb",
-    "lib/goliath_skeleton/tasks.rb",
-    "lib/goliath_skeleton/tasks/rspec.rake",
-    "lib/goliath_skeleton/tasks/yard.rake",
-    "lib/goliath_skeleton/use_gemfile_jail.rb",
-    "spec/passthru_proxy_spec.rb",
-    "spec/spec_helper.rb",
-    "spec/support/goliath_skeleton_test_helper.rb"
+    "lib/senor_armando/spec/senor_armando_he_helps_test.rb",
+    "lib/senor_armando/tasks.rb",
+    "lib/senor_armando/tasks/rspec.rake",
+    "lib/senor_armando/tasks/yard.rake",
+    "lib/senor_armando/use_gemfile_jail.rb",
+    "senor_armando.gemspec",
+    "senor_armando.jpeg",
+    "spec/armando_proxy_spec.rb",
+    "spec/spec_helper.rb"
   ]
-  s.homepage = %q{http://github.com/infochimps-labs/goliath_skeleton}
+  s.homepage = %q{http://github.com/infochimps-labs/senor_armando}
   s.licenses = [%q{MIT}]
   s.require_paths = [%q{lib}]
   s.required_ruby_version = Gem::Requirement.new(">= 1.9.2")
   s.rubygems_version = %q{1.8.5}
-  s.summary = %q{Simple skeleton for a Goliath (http://goliath.io/) app}
+  s.summary = %q{Helper middlewares for a Goliath (http://goliath.io/) app as used in Infochimps Planet of the APIs}
   s.test_files = [
-    "spec/passthru_proxy_spec.rb",
-    "spec/spec_helper.rb",
-    "spec/support/goliath_skeleton_test_helper.rb"
+    "spec/armando_proxy_spec.rb",
+    "spec/spec_helper.rb"
   ]
 
   if s.respond_to? :specification_version then
