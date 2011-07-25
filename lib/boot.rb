@@ -13,9 +13,7 @@ require 'configliere'
 #
 require 'goliath/rack/exception_handler'
 require 'goliath/rack/errors'
-require 'goliath/plugins/statsd_plugin'
-require 'goliath/rack/statsd_logger'
 
-
+Settings.define :app_name, :default => File.basename($0, '.rb'), :description => 'Name to key on for tracer stats, statsd metrics, etc.'
 Settings.read(Goliath.root_path('config/app.yaml'))
 Settings.resolve!

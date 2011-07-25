@@ -13,7 +13,7 @@ require 'goliath/endpoint/proxy'
 #
 class GoliathRepeater < Goliath::Endpoint::Proxy
   use Goliath::Rack::Heartbeat                  # respond to /status with 200, OK (monitoring, etc)
-  use Goliath::Rack::Tracer, 'X-Tracer'         # log trace statistics
+  use Goliath::Rack::Tracer, Settings.tracer_name  # log trace statistics
   use Goliath::Rack::Params                     # parse & merge query and body parameters
   use Goliath::Rack::ExceptionHandler           # catch errors and present as non-200 responses
 end
