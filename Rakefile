@@ -15,6 +15,8 @@ Jeweler::Tasks.new do |gem|
   gem.email                 = "coders@infochimps.org"
   gem.authors               = ["Infochimps team"]
 
+  Jeweler::RubygemsDotOrgTasks.new
+
   gem.required_ruby_version = '>=1.9.2'
 
   gem.add_dependency 'goliath',             ">= 0.9.1"
