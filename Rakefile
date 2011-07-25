@@ -17,14 +17,15 @@ Jeweler::Tasks.new do |gem|
 
   gem.required_ruby_version = '>=1.9.2'
 
-  gem.add_dependency 'goliath',             ">= 0.9.1"
-  gem.add_dependency 'eventmachine',        ">= 1.0.0.beta.3"
-  gem.add_dependency 'em-synchrony',        ">= 0.3.0.beta.1"
-  gem.add_dependency 'em-http-request',     ">= 1.0.0.beta.3"
-
   gem.add_dependency 'yajl-ruby',           "~> 0.8.2"
   gem.add_dependency 'gorillib',            "~> 0.1.1"
-  gem.add_dependency 'addressable',         "~> 2.2.5"
+  gem.add_dependency 'configliere',         "~> 0.4.7"
+  gem.add_dependency 'postrank-uri',        "~> 1.0.9"
+
+  gem.add_dependency 'goliath',             "~> 0.9.2"
+  gem.add_dependency 'eventmachine',        ">= 1.0.0.beta.4"
+  gem.add_dependency 'em-synchrony',        ">= 0.3.0.beta.1"
+  gem.add_dependency 'em-http-request',     ">= 1.0.0.beta.4"
 
   gem.add_dependency 'rack',                ">=1.2.2"
   gem.add_dependency 'rack-contrib'

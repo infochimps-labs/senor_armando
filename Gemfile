@@ -1,13 +1,11 @@
 source "http://rubygems.org"
 
-gem   'gorillib',    "~> 0.1.0"
 gem   'yajl-ruby',   "~> 0.8.2"
+gem   'gorillib',    "~> 0.1.1"
 gem   'configliere', "~> 0.4.7"
 gem   'postrank-uri', "~> 1.0.9"
 
-# you may want to link these two in ./lib if you're developing
 gem   'goliath',         :git => 'https://github.com/postrank-labs/goliath.git'
-
 gem   'eventmachine',    :git => 'https://github.com/eventmachine/eventmachine.git'
 gem   'em-synchrony',    :git => 'https://github.com/igrigorik/em-synchrony.git'
 gem   'em-http-request', :git => 'https://github.com/igrigorik/em-http-request.git'
