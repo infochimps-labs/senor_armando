@@ -1,14 +1,12 @@
 # Goliath Skeleton
 
-A collection of base endpoints and helper methods that capture common API patterns
-
 In Planet of the Apes, Señor Armando is the owner of a circus, a human friend of Cornelius and Zira, and caregiver for Ceasar, teaching him human knowledge and introducing him to human habits.
 
-On the Planet of the APIs, Señor Armando is a collection of helper methods used to introduce human habits to APIs.
+On the Planet of the APIs, Señor Armando is a collection of helper methods that introduce human habits to APIs.
 
 Both have an enthusiastic appreciation for rich Corinthian leather.
 
-![Señor Armando photo](http://github.com/infochimps-labs/goliath_skeleton/blob/master/senor_armando.jpeg)
+![Señor Armando photo](http://github.com/infochimps-labs/senor_armando/blob/master/senor_armando.jpeg)
 
 ## Setup
 
