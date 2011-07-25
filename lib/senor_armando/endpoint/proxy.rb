@@ -1,3 +1,5 @@
+require 'em-http'
+require 'em-synchrony/em-http'
 require 'postrank-uri'
 Settings.define :forwarder, :required => true, :description => "Destination host to forward requests to"
 
@@ -21,7 +23,7 @@ module SenorArmando
         # Set the target host correctly
         dest_url = PostRank::URI.normalize("#{Settings[:forwarder]}#{env[Goliath::Request::REQUEST_PATH]}")
 
-        env.logger.info ['proxy', dest_url].join("\t")
+        env.logger.debug ['proxy', dest_url, dest_params].join("\t")
         [dest_url, dest_params]
       end
 
@@ -31,7 +33,6 @@ module SenorArmando
 
         dest_url, dest_params = dest_url_and_params(env)
         dest_params[:head]['Host'] = dest_url.host
-        env.logger.debug( [dest_url, dest_params] )
 
         req = EM::HttpRequest.new(dest_url.to_s)
         resp =

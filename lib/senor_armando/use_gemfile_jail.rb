@@ -1,3 +1,11 @@
+module Goliath
+  ::Goliath::ROOT_DIR = File.expand_path(File.join(File.dirname($0), '..')) unless defined?(::Goliath::ROOT_DIR)
+  def self.root_path(*dirs)
+    File.join(::Goliath::ROOT_DIR, *dirs)
+  end
+end
+# $LOAD_PATH.unshift(Goliath.root_path("lib")) unless $LOAD_PATH.include?(Goliath.root_path("lib"))
+
 if defined? RACK_ENV
   true #pass
 elsif (idx = (ARGV.index('-e') || ARGV.index('--environment')))

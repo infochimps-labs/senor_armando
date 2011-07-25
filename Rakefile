@@ -1,6 +1,7 @@
+module Goliath ; ROOT_DIR = File.expand_path(File.dirname(__FILE__)) ; end
 require File.join(File.dirname(__FILE__), 'lib/senor_armando/use_gemfile_jail')
+$LOAD_PATH.unshift(Goliath.root_path("lib")) unless $LOAD_PATH.include?(Goliath.root_path("lib"))
 require 'rake'
-
 require 'senor_armando/tasks'
 
 require 'jeweler'

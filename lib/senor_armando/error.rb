@@ -1,5 +1,6 @@
 require 'goliath/validation/standard_http_errors'
 require 'goliath/validation/error'
+require 'gorillib/metaprogramming/class_attribute'
 
 module Goliath
   module Validation
@@ -8,7 +9,7 @@ module Goliath
     # Style guide:
     #
     # * be careful about interpolating messages into the error response.
-    #   Escape anything that might lead to an injection attack. 
+    #   Escape anything that might lead to an injection attack.
     # * To quote text, use {}. For example,
     #      raise Apeyeye::ApiCallNotFoundError, "There is no api call at {#{request.path}}. Check the catalog at http://infochimps.com/api to ensure the path is correct. If there is a mismatch, please email help@infochimps.com."
     #   which leads eventually to

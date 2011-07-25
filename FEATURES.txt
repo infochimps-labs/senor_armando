@@ -1,5 +1,5 @@
 
-PassthruProxy
+ArmandoProxy
   responds to requests by forwarding to a given responder
   responds to requests
   forwards to our API server
@@ -16,5 +16,5 @@ PassthruProxy
     forwards POST requests
     forwards POST requests
 
-Finished in 0.06414 seconds
+Finished in 0.03642 seconds
 10 examples, 0 failures

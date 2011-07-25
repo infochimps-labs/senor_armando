@@ -6,9 +6,12 @@ Spork.prefork do
   ENV["RACK_ENV"] ||= 'test'
   RACK_ENV = ENV["RACK_ENV"] unless defined?(RACK_ENV)
 
-  require File.join(File.dirname(__FILE__), '../lib/boot')
+  module Goliath ; ROOT_DIR = File.expand_path(File.join(File.dirname(__FILE__), '..')) ; end
+  require File.join(File.dirname(__FILE__), '../lib/senor_armando/use_gemfile_jail')
   require 'rspec'
+  require 'goliath'
   require 'goliath/test_helper'
+  require 'senor_armando/spec/he_help_me_test'
 
   # Requires custom matchers & macros, etc from files in ./support/ & subdirs
   Dir[Goliath.root_path("spec/support/**/*.rb")].each {|f| require f}

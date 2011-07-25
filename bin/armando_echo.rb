@@ -1,8 +1,6 @@
 #!/usr/bin/env ruby
 require File.join(File.dirname(__FILE__), '../lib/boot')
 
-require 'goliath/endpoint/echo'
-
 # Usage:
 #   ruby -r ./lib/boot.rb ./bin/goliath_echo.rb -sv -p 9002
 #
@@ -10,9 +8,9 @@ require 'goliath/endpoint/echo'
 #
 # Summarizes the request back into the response header fields
 #
-class GoliathEcho < Goliath::Endpoint::Echo
+class ArmandoEcho < SenorArmando::Endpoint::Echo
   use Goliath::Rack::Heartbeat                  # respond to /status with 200, OK (monitoring, etc)
   use Goliath::Rack::Tracer                     # log trace statistics
   use Goliath::Rack::Params                     # parse & merge query and body parameters
-  use Goliath::Rack::ExceptionHandler           # catch errors and present as non-200 responses
+  use SenorArmando::Rack::ExceptionHandler      # catch errors and present as non-200 responses
 end

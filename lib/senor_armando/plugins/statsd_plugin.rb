@@ -1,5 +1,5 @@
 module SenorArmando
-  module Plugin
+  module Plugins
     # Sends metrics to a remote statsd-compatible server
     class StatsdSender < EventMachine::Connection
       DEFAULT_HOST = '127.0.0.1'
@@ -46,7 +46,7 @@ module SenorArmando
     # Sends metrics to a remote statsd-compatible server
     #
     # @example
-    #  plugin SenorArmando::Plugin::StatsdPlugin
+    #  plugin SenorArmando::Plugins::StatsdPlugin
     #
     # You might also enjoy using the SenorArmando::Rack::StatsdLogger middleware.
     #
@@ -59,7 +59,7 @@ module SenorArmando
       # @param config [Hash] The server configuration data
       # @param status [Hash] A status hash
       # @param logger [Log4R::Logger] The logger
-      # @return [Goliath::Plugin::StatsdPlugin] An instance of the Goliath::Plugin::StatsdPlugin plugin
+      # @return [SenorArmando::Plugins::StatsdPlugin] An instance of the SenorArmando::Plugins::StatsdPlugin plugin
       def initialize(port, config, status, logger)
         @status = status
         @config = config[:statsd_logger] || {}

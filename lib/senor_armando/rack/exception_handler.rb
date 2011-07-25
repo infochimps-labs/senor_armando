@@ -1,4 +1,4 @@
-module Goliath
+module SenorArmando
   module Rack
 
     # Middleware to rescue validation errors and send them up the chain as normal non-200 responses

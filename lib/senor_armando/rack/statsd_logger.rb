@@ -1,6 +1,6 @@
 Settings.define :statsd_name, :description => 'Name for statsd metrics', :finally => lambda{ Settings.statsd_name ||= Settings.app_name }
 
-module Goliath
+module SenorArmando
   module Rack
     class StatsdLogger
       include Goliath::Rack::AsyncMiddleware
