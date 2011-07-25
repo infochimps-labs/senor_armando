@@ -1,8 +1,8 @@
-# Goliath Skeleton
+# Senor Armando - Goliath Helpers
 
 In Planet of the Apes, Señor Armando is the owner of a circus, a human friend of Cornelius and Zira, and caregiver for Ceasar, teaching him human knowledge and introducing him to human habits.
 
-On the Planet of the APIs, Señor Armando is a collection of helper methods that introduce human habits to APIs.
+On the Planet of the APIs, Señor Armando is a collection of helper methods that introduce human habits to your goliath app.
 
 Both have an enthusiastic appreciation for rich Corinthian leather.
 
@@ -10,7 +10,7 @@ Both have an enthusiastic appreciation for rich Corinthian leather.
 
 ## Setup
 
-* run `./bin/create_gemfile_jail.rb`; this will run bundler install but cache the results locally for much quickness. **You MUST run it at least once explicitly**.
+* run `armando_gemfile_jail`; this will run bundler install but cache the results locally for much quickness. **You MUST run it at least once explicitly**.
 
 That should be it!
   
