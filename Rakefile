@@ -15,8 +15,6 @@ Jeweler::Tasks.new do |gem|
   gem.email                 = "coders@infochimps.org"
   gem.authors               = ["Infochimps team"]
 
-  Jeweler::RubygemsDotOrgTasks.new
-
   gem.required_ruby_version = '>=1.9.2'
 
   gem.add_dependency 'goliath',             ">= 0.9.1"
@@ -52,6 +50,7 @@ Jeweler::Tasks.new do |gem|
   gem.test_files = gem.files.grep(/^spec\//)
   gem.require_paths = ['lib']
 end
+Jeweler::RubygemsDotOrgTasks.new
 
 # App-specific tasks
 Dir[File.dirname(__FILE__)+'/lib/tasks/**/*.rake'].sort.each{|f| load f }
