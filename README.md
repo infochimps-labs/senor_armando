@@ -6,7 +6,7 @@ On the Planet of the APIs, Señor Armando is a collection of helper methods that
 
 Both have an enthusiastic appreciation for rich Corinthian leather.
 
-![Señor Armando photo](http://github.com/infochimps-labs/senor_armando/blob/master/senor_armando.jpeg)
+![Señor Armando photo](http://github.com/infochimps-labs/senor_armando/raw/master/senor_armando.jpeg)
 
 ## Setup
 
