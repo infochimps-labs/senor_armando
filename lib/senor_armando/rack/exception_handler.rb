@@ -25,9 +25,14 @@ module SenorArmando
             'X-Error-Detail'  => err.description,
           })
         headers.delete('Content-Length')
+        if (err.description && (err.message != err.description))
+          message  = "#{err.description} (#{err.message})"
+        else
+          message = err.message
+        end
         body    = {
           "error"   => err.class.to_s.gsub(/.*::/,""),
-          "message" => [err.message, err.description].compact.join(": "),
+          "message" => message,
           "status"  => err.status_code
         }
         [err.status_code, headers, body.to_json]

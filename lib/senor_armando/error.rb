@@ -100,4 +100,28 @@ module Goliath
     end
 
   end
+
+  #
+  # Maps each standard HTTP error code (4xx and 5xx) to a subclass of
+  # Goliath::Validation::Error. The error will have the status_code and
+  # message correct for that response:
+  #
+  #     HTTP_ERRORS[400]
+  #     # Goliath::Validation::NotFoundError
+  #
+  # Each class is named for the standard HTTP message, so 504 'Gateway Time-out'
+  # becomes a Goliath::Validation::GatewayTimeoutError (except 'Internal Server
+  # Error', which becomes InternalServerError not InternalServerErrorError). All non-alphanumeric
+  # characters are smushed together, with no upcasing or
+  # downcasing.
+  #
+  HTTP_ERRORS = {}
+
+  HTTP_ERROR_CODES.each do |code, msg|
+    klass_name = "#{msg.gsub(/\W+/, '')}Error".gsub(/ErrorError$/, "Error")
+    klass = Goliath::Validation.const_get(klass_name)
+    HTTP_ERRORS[code] = klass
+    klass.description = msg
+  end
+
 end

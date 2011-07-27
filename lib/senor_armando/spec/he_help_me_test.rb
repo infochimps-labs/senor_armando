@@ -9,9 +9,18 @@ module SenorArmando
         Goliath.root_path('config', 'app.rb')
       end
 
-      def get_api_request query={}, params={}, errback=DEFAULT_ERRBACK, &block
-        params[:query] = query
-        get_request(params, errback, &block)
+      def get_api_request(klass, query={}, params={}, errback=DEFAULT_ERRBACK, &block)
+        with_api_and_server(klass) do |api|
+          params[:query] = query
+          get_request(params, errback, &block)
+        end
+      end
+
+      def with_api_and_server(klass)
+        with_api(klass, api_options) do |api|
+          run_server.call(api) if defined?(run_server)
+          yield
+        end
       end
 
       def should_have_response(c,r)
@@ -21,15 +30,6 @@ module SenorArmando
       def should_have_ok_response(c)
         [c.response, c.response_header.status].should == ["Hello from Responder\n", 200]
       end
-
-      def with_echo_target api, options
-        with_api(api, options) do |api|
-          s = server(SenorArmando::Endpoint::Echo, 9009)
-          Settings[:forwarder] = 'http://localhost:9009'
-          yield
-        end
-      end
-
     end
   end
 end
