@@ -2,7 +2,7 @@
 require File.join(File.dirname(__FILE__), '../lib/boot')
 
 # Usage:
-#   ruby -r ./lib/boot.rb ./bin/goliath_echo.rb -sv -p 9002
+#   ruby -r ./lib/boot.rb ./bin/armando_echo.rb -sv -p 9002
 #
 #   curl -vv 'http://127.0.0.1:9002/this/that?the=other#yup'
 #

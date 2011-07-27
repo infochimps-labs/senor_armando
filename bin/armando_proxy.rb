@@ -2,7 +2,7 @@
 require File.join(File.dirname(__FILE__), '../lib/boot')
 
 # Usage:
-#   ruby -r ./lib/boot.rb ./bin/goliath_repeater -sv -p 9001
+#   ruby -r ./lib/boot.rb ./bin/armando_proxy.rb -sv -p 9001
 #
 #   curl -vv 'http://127.0.0.1:9001/unicodesnowmanforyou.com/'
 #
