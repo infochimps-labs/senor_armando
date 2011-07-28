@@ -87,7 +87,7 @@ describe ArmandoProxy do
       end
     end
 
-    it 'forwards POST requests' do
+    it 'forwards HEAD requests' do
       with_api_and_server(ArmandoProxy) do
         head_request() do |c|
           should_have_ok_response(c)
