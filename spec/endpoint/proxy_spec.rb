@@ -1,4 +1,3 @@
-# TODO: factor out the mongo and apey_eye specific code
 require 'spec_helper'
 require Goliath.root_path('bin/armando_proxy')
 
