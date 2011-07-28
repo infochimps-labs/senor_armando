@@ -1,6 +1,6 @@
 require 'spec_helper'
-require Goliath.root_path('bin/armando_raises_hell')
-require Goliath.root_path('bin/armando_proxy')
+require Settings.root_path('bin/armando_raises_hell')
+require Settings.root_path('bin/armando_proxy')
 
 describe ArmandoRaisesHell do
   include SenorArmando::Spec::HeHelpMeTest

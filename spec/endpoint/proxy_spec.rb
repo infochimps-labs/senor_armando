@@ -1,5 +1,5 @@
 require 'spec_helper'
-require Goliath.root_path('bin/armando_proxy')
+require Settings.root_path('bin/armando_proxy')
 
 describe ArmandoProxy do
   include SenorArmando::Spec::HeHelpMeTest

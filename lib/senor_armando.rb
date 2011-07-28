@@ -3,9 +3,10 @@ require 'goliath'
 require 'gorillib'
 require 'configliere'
 require 'yajl/json_gem'
+require 'gorillib/string/inflections'
 
 require 'senor_armando/error'
-require 'senor_armando/rack/tracer'
+require 'senor_armando/goliath_extensions'
 
 module SenorArmando
   module Endpoint
@@ -18,3 +19,4 @@ module SenorArmando
     autoload :ExceptionHandler, 'senor_armando/rack/exception_handler'
   end
 end
+

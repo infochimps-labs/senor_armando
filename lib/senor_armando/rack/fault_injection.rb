@@ -12,13 +12,13 @@ module SenorArmando
       include Goliath::Rack::AsyncMiddleware
 
       def call(env)
-        fault_injector = FaultInjector.receive(env.params, env)
+        fault_injector = FaultInjector.new(env).receive!(env.params)
         fault_injector.maybe_raise_error!
         fault_injector.maybe_sleep!
         super(env, fault_injector)
       end
 
-      def post_process(env, status, headers, body)
+      def post_process(env, status, headers, body, fault_injector)
         [status, headers, body]
       end
 
@@ -33,7 +33,7 @@ module SenorArmando
           self.env = env
         end
 
-        def maybe_raise_error! err_type, err_code
+        def maybe_raise_error!
           return unless Settings.fault_injection_errors
           return unless err_type.present? || err_code.present?
 

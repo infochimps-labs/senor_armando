@@ -1,5 +1,5 @@
 require 'spec_helper'
-require Goliath.root_path('bin/armando_echo')
+require Settings.root_path('bin/armando_echo')
 
 describe ArmandoEcho do
   include SenorArmando::Spec::HeHelpMeTest
