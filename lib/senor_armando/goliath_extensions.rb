@@ -2,10 +2,14 @@ require 'gorillib/string/inflections'
 module Goliath
   module Rack
 
-    module AsyncMiddleware
+    module ComponentName
       def header_slug(key)
-        dasherized_name = app_name.underscore.split('_').map(&:capitalize).join('-')
-        "X-#{dasherized_name}-#{key}".gsub(/[^\w\-]+/, '-')
+        dasherized_name = app_name.gsub(/^[^\w]+/, '-').underscore.split(/[_\-]/).map(&:capitalize).join('-')
+        "X-#{dasherized_name}-#{key}"
+      end
+
+      def component_name
+        self.class.to_s.demodulize
       end
 
       def app_name
@@ -13,7 +17,13 @@ module Goliath
       end
     end
 
+    module AsyncMiddleware
+      include ComponentName
+    end
+
+    #
     # make Tracer respect the header name
+    #
 
     class Tracer
       def initialize(app, header_name=nil)

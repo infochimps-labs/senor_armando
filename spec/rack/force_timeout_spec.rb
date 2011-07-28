@@ -1,18 +1,23 @@
 require 'spec_helper'
 
 require 'senor_armando/rack/force_timeout'
+require 'senor_armando/rack/fault_injection'
 
 class TestForceTimeoutEndpoint < Goliath::API
   use Goliath::Rack::Params                     # parse & merge query and body parameters
   use SenorArmando::Rack::ExceptionHandler      # catch errors and present as non-200 responses
   use SenorArmando::Rack::ForceTimeout          # **testing this one**
-  # use SenorArmando::Rack::FaultInjection        # simulate a long-running result or failure in middleware
+  use SenorArmando::Rack::FaultInjection        # simulate a long-running result or failure in middleware
 
   def response(env)
-    if env.params['raise_endpoint_error'].present?
+    if env.params['endpoint_raise_error'].present?
       raise Goliath::Validation::DatabaseOnFireError
-      [200, {}, "Hello from Responder\n"]
     end
+    if env.params['endpoint_delay'].present?
+      p ['delay', env.params['endpoint_delay']]
+      EM::Synchrony.sleep(  env.params['endpoint_delay'].to_f / 1000 )
+    end
+    [200, {}, "Hello from Responder\n"]
   end
 end
 
@@ -22,15 +27,24 @@ describe SenorArmando::Rack::ForceTimeout do
   before do
     Settings.force_timeout = 100
     Settings.app_name = 'TestForceTimeoutEndpoint'
+    @start_time = Time.now
   end
 
-  context 'no errors, endpoint is fast, middleware is fast' do
-    it 'succeeds' do
-      get_api_request(ArmandoRaisesHell) do |c|
-        should_have_ok_response(c)
+  context 'no errors' do
+    context 'endpoint is fast, middleware is fast' do
+      it 'succeeds' do
+        get_api_request(TestForceTimeoutEndpoint, :endpoint_delay => 20) do |c|
+          should_have_ok_response(c)
+        end
+      end
+    end
+
+    context 'endpoint is slow, middleware is fast' do
+      it 'fails' do
+        get_api_request(TestForceTimeoutEndpoint, :endpoint_delay => 200) do |c|
+          should_have_response(c, ['{"error":"RequestTimeoutError","message":"Request Time-out (Request exceeded 100 ms)","status":"408"}', 408])
+        end
       end
     end
   end
-
 end
-
