@@ -31,6 +31,6 @@ describe SenorArmando::Rack::ForceTimeout do
       end
     end
   end
-  
+
 end
 
