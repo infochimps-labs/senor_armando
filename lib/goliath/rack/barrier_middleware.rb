@@ -1,7 +1,8 @@
 module Goliath
   module Rack
     #
-    # Include this to enable middleware that can perform post-processing.
+    # Include this to enable middleware that can perform pre- and
+    # post-processing, optionally having multiple responses pending.
     #
     # For internal reasons, you can't do the following as you would in Rack:
     #
@@ -12,37 +13,65 @@ module Goliath
     #     [status, headers, new_body]
     #   end
     #
-    # +use+ing this sets up a "barrier" helper to do that kind of "around"
-    # processing. Goliath proceed asynchronously, but still "unwind" the request
-    # by walking up the callback chain. Delegating out to the AsyncBarrier also
-    # lets you carry state around -- the ban on instance variables no longer
-    # applies, as the barrier is created for exactly that request.
+    # This class creates a "barrier" helper to do that kind of "around"
+    # processing. Goliath proceeds asynchronously, but will still "unwind" the
+    # request by walking up the callback chain. Delegating out to the
+    # AsyncBarrier also lets you carry state around -- the ban on instance
+    # variables no longer applies, as each barrier is unique per request.
     #
     # @example
-    #   class AwesomeBarrier
+    #   class ShortenUrl
+    #     attr_accessor :shortened_url
     #     include Goliath::Rack::AsyncBarrier
     #
     #     def pre_process
-    #       env['awesomness_quotient'] = 3
-    #       # the return value of pre_process is irrelevant
+    #       target_url        = PostRank::URI.clean(env.params['url'])
+    #       shortener_request = EM::HttpRequest.new('http://is.gd/create.php').aget(:query => { :format => 'simple', :url => target_url })
+    #       enqueue :shortened_url, shortener_request
+    #       Goliath::Connection::AsyncResponse
     #     end
     #
-    #     def post_process(env, status, headers, body, awesomness_quotient)
-    #       new_body = make_totally_awesome(body, awesomness_quotient)
-    #       [status, headers, new_body]
+    #     # by the time you get here, the BarrierMiddleware will have populated
+    #     # the [status, headers, body] and the shortener_request will have
+    #     # populated the shortened_url attribute.
+    #     def post_process
+    #       if succeeded?(:shortened_url)
+    #         headers['X-Shortened-URI'] = shortened_url
+    #       end
+    #       [status, headers, body]
+    #     end
+    #   end
+    #
+    #   class AwesomeApiWithShortening < Goliath::API
+    #     use Goliath::Rack::Params
+    #     use Goliath::Rack::BarrierMiddleware, ShortenUrl
+    #
+    #     def response(env)
+    #       # ... do something awesome
     #     end
     #   end
     #
     module BarrierMiddleware
+      include Goliath::Rack::Validator
+
       # Called by the framework to create the barrier middleware.
+      # Any extra args passed to the use statement are sent to each
+      # barrier_klass as it is created.
       #
       # @example
-      #   class MyAsyncBarrier < Goliath::Rack::MultiReceiver
+      #   class AwesomeProcessor
+      #     include Goliath::Rack::AsyncBarrier
+      #
+      #     def initialize(env, aq)
+      #       @awesomeness_quotient = aq
+      #       super(env)
+      #     end
+      #
       #     # ... define pre_process and post_process ...
       #   end
       #
-      #   class AsyncAroundwareDemoMulti < Goliath::API
-      #     use Goliath::Rack::AsyncAroundware, MyAsyncBarrier
+      #   class AwesomeApiWithShortening < Goliath::API
+      #     use Goliath::Rack::BarrierMiddleware, AwesomeProcessor, 3
       #     # ... stuff ...
       #   end
       #
@@ -57,42 +86,38 @@ module Goliath
         @barrier_args  = args
       end
 
+      # Generate a barrier to process the request, using request env & any args
+      # passed to this BarrierMiddleware at creation
       #
-      # However, you will notice that we execute the post_process method in the
-      # default return case. If the validations fail later in the middleware
-      # chain before your classes response(env) method is executed, the response
-      # will come back up through the chain normally and be returned.
-      #
-      # To do preprocessing, override this method in your subclass and invoke
-      # super(env) as the last line.  Any extra arguments will be made available
-      # to the post_process method.
-      #
-      # ... downstream @app.call either
-      # * returns a result directly (perhaps an error occured, or perhaps the
-      #   middleware short-circuits, like Goliath::Rack::Heartbeat
-      # * or returns the 'Goliath::Connection::AsyncResponse', in which case
-      #   we will receive the actual response to process later via callback
+      # @param env [Goliath::Env] The goliath environment
+      # @return [Goliath::Rack::AsyncBarrier] The barrier to process this request
+      def new_barrier(env)
+        @barrier_klass.new(env, *@barrier_args)
+      end
+
+      # This coordinates an async_barrier to process a request. We hook the
+      # barrier in the middle of the async_callback chain:
+      # * send the downstream response to the barrier, either directly
+      #   (@app.call) or via async callback
+      # * have the upstream callback chain be invoked when the barrier completes
       #
       # @param env [Goliath::Env] The goliath environment
       # @return [Array] The [status_code, headers, body] tuple
       def call(env, *args)
         barrier =  new_barrier(env)
 
+        barrier_resp = barrier.pre_process
+        # return barrier_resp if final_response?(barrier_resp)
+
+        barrier.add_to_pending(:downstream_resp)
         hook_into_callback_chain(env, barrier)
 
-        barrier_resp = barrier.pre_process
-        if final_response?(barrier_resp)
-          return barrier_resp
-        else
-          barrier.add_to_pending :response
-        end
-
         downstream_resp = @app.call(env)
-        
+
         # pass a final response to the barrier, which will invoke the callback
         # chain at its leisure. Either way, our response is *always* async.
         if final_response?(downstream_resp)
-          barrier.accept_response(downstream_resp)
+          send_response_to_barrier(downstream_resp)
         end
         return Goliath::Connection::AsyncResponse
       end
@@ -101,52 +126,31 @@ module Goliath
         resp != Goliath::Connection::AsyncResponse
       end
 
-      # Store the previous async.callback into async_cb and redefines it to be
-      # our own. When the asynchronous response is done, Goliath can "unwind"
-      # the request by walking up the callback chain.
-      #
-      # put barrier in the middle of the async_callback chain:
+      # Put barrier in the middle of the async_callback chain:
       # * save the old callback chain;
-      # * put the barrier in as the new async_callback;
-      # * when the barrier completes, invoke the old callback chain
+      # * have the downstream callback send results to the barrier (possibly
+      #   completing it)
+      # * set the old callback chain to fire when the barrier completes
       def hook_into_callback_chain(env, barrier)
         async_callback = env['async.callback']
 
         # The response from the downstream app is accepted by the barrier...
-        downstream_callback = Proc.new do |status, headers, body|
-          safely(env){ barrier.accept_response(status, headers, body) }
-        end
+        downstream_callback = Proc.new{|*resp| send_response_to_barrier(resp) }
         env['async.callback'] = downstream_callback
 
-        # But the upstream callback is only invoked when the barrier completes
-        invoke_upstream_callback = Proc.new do
-          safely(env){ async_callback.call(barrier.post_process) }
+        # .. but the upstream chain is only invoked when the barrier completes
+        invoke_upstream_chain = Proc.new do
+          safely(env) do
+            barrier_resp = barrier.post_process
+            async_callback.call(barrier_resp)
+          end
         end
-        barrier.callback(&invoke_upstream_callback)
-        barrier.errback(&invoke_upstream_callback)
+        barrier.callback(&invoke_upstream_chain)
+        barrier.errback(&invoke_upstream_chain)
       end
 
-      include Goliath::Rack::Validator
-      def do_postprocess(env, async_callback, barrier)
-        safely(env) do
-          result_for_upstream = barrier.post_process
-          async_callback.call(result_for_upstream)
-        end
-      end
-      
-      # Generates the barrier to actually process the request, giving it
-      # the request env & any args passed to this BarrierMiddleware at creation
-      def new_barrier(env)
-        @barrier_klass.new(env, *@barrier_args)
-      end
-      
-      # Override this method in your middleware to perform any
-      # postprocessing. Note that this can be called in the asynchronous case
-      # (walking back up the middleware async.callback chain), or synchronously
-      # (in the case of a validation error, or if a downstream middleware
-      # supplied a direct response).
-      def post_process(env, status, headers, body)
-        [status, headers, body]
+      def send_response_to_barrier(resp)
+        safely(env){ barrier.accept_response(:downstream_resp, true, resp) }
       end
     end
   end
