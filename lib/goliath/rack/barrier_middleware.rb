@@ -60,12 +60,10 @@ module Goliath
       # @example
       #   class AwesomeProcessor
       #     include Goliath::Rack::AsyncBarrier
-      #
       #     def initialize(env, aq)
       #       @awesomeness_quotient = aq
       #       super(env)
       #     end
-      #
       #     # ... define pre_process and post_process ...
       #   end
       #
@@ -85,10 +83,10 @@ module Goliath
         @barrier_args  = args
       end
 
-      # This coordinates an async_barrier to process a request. We hook the
+      # This coordinates a barrier to process a request. We hook the
       # barrier in the middle of the async_callback chain:
-      # * send the downstream response to the barrier, either directly
-      #   (@app.call) or via async callback
+      # * send the downstream response to the barrier, whether received directly
+      #   from @app.call or via async callback
       # * have the upstream callback chain be invoked when the barrier completes
       #
       # @param env [Goliath::Env] The goliath environment
@@ -104,10 +102,10 @@ module Goliath
 
         downstream_resp = @app.call(env)
 
-        # pass a final response to the barrier, which will invoke the callback
-        # chain at its leisure. Either way, our response is *always* async.
+        # if downstream resp is final, pass it to the barrier; it will invoke
+        # the callback chain at its leisure. Our response is *always* async.
         if final_response?(downstream_resp)
-          send_response_to_barrier(env, barrier, downstream_resp)
+          safely(env){ barrier.accept_response(:downstream_resp, true, resp) }
         end
         return Goliath::Connection::AsyncResponse
       end
@@ -130,7 +128,7 @@ module Goliath
         async_callback = env['async.callback']
 
         # The response from the downstream app is accepted by the barrier...
-        downstream_callback = Proc.new{|resp| send_response_to_barrier(env, barrier, resp) }
+        downstream_callback = Proc.new{|resp| safely(env){ barrier.accept_response(:downstream_resp, true, resp) } }
         env['async.callback'] = downstream_callback
 
         # .. but the upstream chain is only invoked when the barrier completes
@@ -146,9 +144,6 @@ module Goliath
         resp != Goliath::Connection::AsyncResponse
       end
 
-      def send_response_to_barrier(env, barrier, resp)
-        safely(env){ barrier.accept_response(:downstream_resp, true, resp) }
-      end
     end
   end
 end

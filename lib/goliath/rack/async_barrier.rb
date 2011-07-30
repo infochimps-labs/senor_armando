@@ -70,8 +70,8 @@ module Goliath
       # Add a deferred request to the pending pool, and set a callback to
       # #accept_response when the request completes
       def enqueue(handle, deferred_req)
-        add_to_pending(handle)
         fiber = Fiber.current
+        add_to_pending(handle)
         deferred_req.callback{ safely(env){ accept_response(handle, true,  deferred_req, fiber) } }
         deferred_req.errback{  safely(env){ accept_response(handle, false, deferred_req, fiber) } }
       end
