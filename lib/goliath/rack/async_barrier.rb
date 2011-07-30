@@ -7,6 +7,7 @@ module Goliath
     #
     module AsyncBarrier
       include EventMachine::Deferrable
+      include Goliath::Rack::Validator
 
       # The request environment, set in the initializer
       attr_reader :env
@@ -29,15 +30,18 @@ module Goliath
       end
 
       # Override this method in your middleware to perform any preprocessing
-      # (launching a deferred request, perhaps). You must return
-      # Goliath::Connection::AsyncResponse if you want processing to continue
+      # (launching a deferred request, perhaps).
+      #
+      # You must return Goliath::Connection::AsyncResponse if you want processing to continue
+      #
+      # @return [Array] array contains [status, headers, body]
       def pre_process
         Goliath::Connection::AsyncResponse
       end
 
       # Override this method in your middleware to perform any postprocessing.
       # This will only be invoked when all deferred requests (including the
-      # response) have completed
+      # response) have completed.
       #
       # @return [Array] array contains [status, headers, body]
       def post_process
@@ -45,24 +49,15 @@ module Goliath
       end
 
       # Virtual setter for the downstream middleware/endpoint response
-      def downstream_response=(status_headers_body)
+      def downstream_resp=(status_headers_body)
         @status, @headers, @body = status_headers_body
-      end
-
-      # Add a deferred request to the pending pool, and set a callback to
-      # #accept_response when the request completes
-      def enqueue(handle, deferred_req)
-        add_to_pending(handle)
-        fiber = Fiber.current
-        deferred_req.callback{ accept_response(handle, true,  deferred_req, fiber) }
-        deferred_req.errback{  accept_response(handle, false, deferred_req, fiber) }
       end
 
       # On receipt of an async result,
       # * remove the tracking handle from pending_requests
       # * and file the response in either successes or failures as appropriate
-      # * call the setter for that handle if it exists (accepting :shortened_url
-      #   effectively calls self.shortened_url = resp)
+      # * call the setter for that handle if any (on receipt of :shortened_url,
+      #   calls self.shortened_url = resp)
       # * check progress -- succeeds (transferring controll) if nothing is pending.
       def accept_response(handle, resp_succ, resp, fiber=nil)
         raise "received response for a non-pending request!" if not pending_requests.include?(handle)
@@ -70,6 +65,15 @@ module Goliath
         resp_succ ? (successes[handle] = resp) : (failures[handle] = resp)
         self.send("#{handle}=", resp) if self.respond_to?("#{handle}=")
         check_progress(fiber)
+      end
+
+      # Add a deferred request to the pending pool, and set a callback to
+      # #accept_response when the request completes
+      def enqueue(handle, deferred_req)
+        add_to_pending(handle)
+        fiber = Fiber.current
+        deferred_req.callback{ safely(env){ accept_response(handle, true,  deferred_req, fiber) } }
+        deferred_req.errback{  safely(env){ accept_response(handle, false, deferred_req, fiber) } }
       end
 
       # Register a pending request. If you call this from outside #enqueue, you
@@ -81,6 +85,10 @@ module Goliath
 
       def finished?
         pending_requests.empty?
+      end
+
+      def request_succeeded?(handle)
+        successes.include?(handle)
       end
 
       # Perform will yield (allowing other processes to continue) until all
