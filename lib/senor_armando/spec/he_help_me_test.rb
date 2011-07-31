@@ -6,7 +6,7 @@ module SenorArmando
       DEFAULT_ERRBACK = Proc.new{|c| fail "HTTP Request failed #{c.response}" }
 
       def config_file
-        Settings.root_path('config', 'app.rb')
+        ENV.root_path('config', 'app.rb')
       end
 
       def get_api_request(klass, query={}, params={}, errback=DEFAULT_ERRBACK, &block)
@@ -34,7 +34,7 @@ module SenorArmando
       class TestEchoEndpoint < SenorArmando::Endpoint::Echo
         use Goliath::Rack::Params                     # parse & merge query and body parameters
       end
-      
+
     end
   end
 end

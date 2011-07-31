@@ -5,7 +5,6 @@ require 'senor_armando/rack/fault_injection'
 
 class TestForceTimeoutEndpoint < Goliath::API
   use Goliath::Rack::Params                     # parse & merge query and body parameters
-  use SenorArmando::Rack::ExceptionHandler      # catch errors and present as non-200 responses
   use SenorArmando::Rack::ForceTimeout          # **testing this one**
   use SenorArmando::Rack::FaultInjection        # simulate a long-running result or failure in middleware
 

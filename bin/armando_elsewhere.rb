@@ -19,7 +19,6 @@ class PassthruProxy < Goliath::Endpoint::Proxy
   use Goliath::Rack::Heartbeat                                   # respond to /status with 200, OK (monitoring, etc)
   use Goliath::Rack::Tracer, 'X-Tracer'                          # log trace statistics
   use Goliath::Rack::Params                                      # parse & merge query and body parameters
-  use Goliath::Rack::ExceptionHandler                            # catch errors and present as non-200 responses
 
   # use Goliath::Rack::StatsdLogger, Settings.statsd_logger_handle # send request logs to statsd
   # plugin Goliath::Plugin::StatsdPlugin                           # send internal stats to statsd

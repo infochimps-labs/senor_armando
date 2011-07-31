@@ -1,5 +1,5 @@
 require 'spec_helper'
-require Settings.root_path('bin/armando_echo')
+require ENV.root_path('bin/armando_echo')
 
 describe ArmandoEcho do
   include SenorArmando::Spec::HeHelpMeTest
@@ -10,7 +10,7 @@ describe ArmandoEcho do
     get_api_request(ArmandoEcho) do |c|
       should_have_ok_response(c)
     end
-  end 
+  end
 
   context 'query parameters' do
     it 'echos the query parameters in "X-Echo-Params"' do

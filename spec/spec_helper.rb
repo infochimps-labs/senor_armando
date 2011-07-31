@@ -6,7 +6,7 @@ Spork.prefork do
   ENV["RACK_ENV"] ||= 'test'
   RACK_ENV = ENV["RACK_ENV"] unless defined?(RACK_ENV)
 
-  require File.expand_path(File.join(File.dirname(__FILE__), '../lib/senor_armando/use_gemfile_jail'))
+  require File.expand_path(File.join(File.dirname(__FILE__), '../lib/boot'))
   Settings.define :app_name, :default => File.basename($0, '.rb'), :description => 'Name to key on for tracer stats, statsd metrics, etc.'
 
   require 'rspec'
@@ -16,7 +16,7 @@ Spork.prefork do
   require 'senor_armando/spec/he_help_me_test'
 
   # Requires custom matchers & macros, etc from files in ./support/ & subdirs
-  Dir[Settings.root_path("spec/support/**/*.rb")].each {|f| require f}
+  Dir[ENV.root_path("spec/support/**/*.rb")].each {|f| require f}
 
   # Configure rspec
   RSpec.configure do |config|

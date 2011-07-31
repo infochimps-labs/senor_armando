@@ -15,8 +15,6 @@ module SenorArmando
   end
 
   module Rack
-    # autoload :SenorArmando::Rack::EchoParams,       'senor_armando/rack/echo_params'
-    autoload :ExceptionHandler, 'senor_armando/rack/exception_handler'
   end
 end
 

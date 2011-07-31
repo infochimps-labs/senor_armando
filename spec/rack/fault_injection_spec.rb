@@ -1,6 +1,6 @@
 require 'spec_helper'
-require Settings.root_path('bin/armando_raises_hell')
-require Settings.root_path('bin/armando_proxy')
+require ENV.root_path('bin/armando_raises_hell')
+require ENV.root_path('bin/armando_proxy')
 
 describe ArmandoRaisesHell do
   include SenorArmando::Spec::HeHelpMeTest

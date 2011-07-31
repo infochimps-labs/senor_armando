@@ -53,7 +53,7 @@ module SenorArmando
           unless env['force_timeout_callback_ran']
             env['force_timeout_callback_ran'] = true
             err = Goliath::Validation::RequestTimeoutError.new("Request exceeded #{timeout.to_i} ms")
-            async_cb.call(SenorArmando::Rack::ExceptionHandler.error_response(err))
+            async_cb.call(Goliath::Rack::Validator.error_response(err))
           end
         end
 
