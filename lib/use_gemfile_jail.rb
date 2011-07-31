@@ -15,7 +15,7 @@ is_production = (!!ENV['GEM_STRICT']) || (RACK_ENV == 'production') || (RACK_ENV
 
 def try_or_exec_bootstrap try_bootstrap=true, &block
   if try_bootstrap && (not block.call)
-    cmd = ENV.root_path("bin/create_gemfile_jail.rb")
+    cmd = ENV.root_path("bin/update_gemfile_jail.rb")
     warn "WARN The gem environment is out-of-date or has yet to be bootstrapped."
     warn "     Runnning '#{cmd} --local' to remedy this situation. "
     warn "     if you get an error about 'rake' or somesuch not installed, "
