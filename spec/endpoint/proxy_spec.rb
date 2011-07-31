@@ -14,21 +14,27 @@ describe ArmandoProxy do
   end
 
   it 'responds to requests by forwarding to a given responder' do
-    get_api_request(ArmandoProxy) do |c|
-      should_have_response(c,["Hello from Responder\n", 200])
+    with_api_and_server(ArmandoProxy) do
+      get_api_request() do |c|
+        should_have_response(c,["Hello from Responder", 200])
+      end
     end
   end
 
   it 'responds to requests' do
-    get_api_request(ArmandoProxy) do |c|
-      should_have_ok_response(c)
+    with_api_and_server(ArmandoProxy) do
+      get_api_request() do |c|
+        should_have_ok_response(c)
+      end
     end
   end
 
   it 'forwards to our API server' do
-    get_api_request(ArmandoProxy) do |c|
-      should_have_ok_response(c)
-      c.response.should == "Hello from Responder\n"
+    with_api_and_server(ArmandoProxy) do
+      get_api_request() do |c|
+        should_have_ok_response(c)
+        c.response.should == "Hello from Responder"
+      end
     end
   end
 
@@ -42,38 +48,46 @@ describe ArmandoProxy do
 
   context 'query parameters' do
     it 'forwards the query parameters' do
-      get_api_request(ArmandoProxy, {:first => :foo, :second => :bar, :third => :baz}) do |c|
-        should_have_ok_response(c)
-        c.response_header['X_ECHO_PARAMS'].should =~ /"first":"foo"/
-        c.response_header['X_ECHO_PARAMS'].should =~ /"second":"bar"/
+      with_api_and_server(ArmandoProxy) do
+        get_api_request({:first => :foo, :second => :bar, :third => :baz}) do |c|
+          should_have_ok_response(c)
+          c.response_header['X_ECHO_PARAMS'].should =~ /"first":"foo"/
+          c.response_header['X_ECHO_PARAMS'].should =~ /"second":"bar"/
+        end
       end
     end
   end
 
   context 'request path' do
     it 'forwards the request path' do
-      get_api_request(ArmandoProxy, {}, {:path => '/my/request/path'}) do |c|
-        should_have_ok_response(c)
-        c.response_header['X_ECHO_PATH'].should == '/my/request/path'
+      with_api_and_server(ArmandoProxy) do
+        get_api_request({}, {:path => '/my/request/path'}) do |c|
+          should_have_ok_response(c)
+          c.response_header['X_ECHO_PATH'].should == '/my/request/path'
+        end
       end
     end
   end
 
   context 'headers' do
     it 'forwards the headers' do
-      get_api_request(ArmandoProxy, {}, {:head => {:first => :foo, :second => :bar}}) do |c|
-        should_have_ok_response(c)
-        c.response_header['X_ECHO_HEADERS'].should =~ /"First":"foo"/
-        c.response_header['X_ECHO_HEADERS'].should =~ /"Second":"bar"/
+      with_api_and_server(ArmandoProxy) do
+        get_api_request({}, {:head => {:first => :foo, :second => :bar}}) do |c|
+          should_have_ok_response(c)
+          c.response_header['X_ECHO_HEADERS'].should =~ /"First":"foo"/
+          c.response_header['X_ECHO_HEADERS'].should =~ /"Second":"bar"/
+        end
       end
     end
   end
 
   context 'request method' do
     it 'forwards GET requests' do
-      get_api_request(ArmandoProxy) do |c|
-        should_have_ok_response(c)
-        c.response_header['X_ECHO_METHOD'].should == 'GET'
+      with_api_and_server(ArmandoProxy) do
+        get_api_request() do |c|
+          should_have_ok_response(c)
+          c.response_header['X_ECHO_METHOD'].should == 'GET'
+        end
       end
     end
 

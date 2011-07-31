@@ -16,7 +16,7 @@ class TestForceTimeoutEndpoint < Goliath::API
       p ['delay', env.params['endpoint_delay']]
       EM::Synchrony.sleep(  env.params['endpoint_delay'].to_f / 1000 )
     end
-    [200, {}, "Hello from Responder\n"]
+    [200, {}, "Hello from Responder"]
   end
 end
 
@@ -30,20 +30,26 @@ describe SenorArmando::Rack::ForceTimeout do
   end
 
   context 'no errors' do
+
     context 'endpoint is fast, middleware is fast' do
       it 'succeeds' do
-        get_api_request(TestForceTimeoutEndpoint, :endpoint_delay => 20) do |c|
-          should_have_ok_response(c)
+        with_api(TestForceTimeoutEndpoint) do
+          get_api_request(:endpoint_delay => 20) do |c|
+            should_have_ok_response(c)
+          end
         end
       end
     end
 
     context 'endpoint is slow, middleware is fast' do
       it 'fails' do
-        get_api_request(TestForceTimeoutEndpoint, :endpoint_delay => 200) do |c|
-          should_have_response(c, ['{"error":"RequestTimeoutError","message":"Request Time-out (Request exceeded 100 ms)","status":"408"}', 408])
+        with_api(TestForceTimeoutEndpoint) do
+          get_api_request(:endpoint_delay => 200) do |c|
+            should_have_response(c, ['{"error":"RequestTimeoutError","message":"Request exceeded 100 ms: Request Time-out","status":"408"}', 408])
+          end
         end
       end
     end
+
   end
 end
