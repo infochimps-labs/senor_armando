@@ -13,9 +13,11 @@ module SenorArmando
           "X-Echo-Path"    => env[Goliath::Request::REQUEST_PATH],
           "X-Echo-Headers" => env['client-headers'].to_json,
           "X-Echo-Method"  => env[Goliath::Request::REQUEST_METHOD],
+          "X-Echo-Special" => self.class.to_s
         }
-        [200, headers, "Hello from Responder\n"]
+        [200, headers, "Hello from Responder"]
       end
     end
   end
 end
+

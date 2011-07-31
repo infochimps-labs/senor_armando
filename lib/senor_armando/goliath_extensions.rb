@@ -51,7 +51,7 @@ module Goliath
           })
         headers.delete('Content-Length')
         if (err.description && (err.message != err.description))
-          message  = "#{err.description} (#{err.message})"
+          message  = "#{err.message}: #{err.description}"
         else
           message = err.message
         end

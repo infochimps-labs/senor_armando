@@ -22,7 +22,7 @@ module SenorArmando
       end
 
       def agent
-        Goliath::Plugin::StatsdPlugin.agent
+        SenorArmando::Plugins::StatsdPlugin.agent
       end
 
       def route(env)

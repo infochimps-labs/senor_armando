@@ -21,4 +21,3 @@ module SenorArmando
   module Rack
   end
 end
-

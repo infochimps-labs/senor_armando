@@ -20,7 +20,7 @@ Spork.prefork do
 
   # Configure rspec
   RSpec.configure do |config|
-    config.include Goliath::TestHelper, :example_group => { :file_path => /spec/ }
+    config.include SenorArmando::Spec::HeHelpMeTest, :example_group => { :file_path => /spec/ }
   end
 end
 

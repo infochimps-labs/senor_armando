@@ -49,7 +49,6 @@ module SenorArmando
         timeout = 100.to_f
 
         EM.add_timer(timeout / 1000) do
-          p "Timer!!"
           unless env['force_timeout_callback_ran']
             env['force_timeout_callback_ran'] = true
             err = Goliath::Validation::RequestTimeoutError.new("Request exceeded #{timeout.to_i} ms")
@@ -60,7 +59,6 @@ module SenorArmando
         status, headers, body = @app.call(env)
 
         if status == Goliath::Connection::AsyncResponse.first
-          p "Back!!!"
           env['force_timeout_callback_ran'] = true
         end
         [status, headers, body]
