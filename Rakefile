@@ -46,7 +46,7 @@ Jeweler::Tasks.new do |gem|
   gem.files = dotfiles + Dir["**/*"].
     reject{|f| f =~ /^\.vendor\// }.
     reject{|f| File.directory?(f) }.
-    reject{|f| ignores.any?{|i| File.fnmatch(i, f) || File.fnmatch(i+'/**/*', f) } }
+    reject{|f| ignores.any?{|i| File.fnmatch(i, f) || File.fnmatch(i+'/**/*', f) || File.fnmatch(i+'/*', f) } }
   gem.test_files = gem.files.grep(/^spec\//)
   gem.require_paths = ['lib']
 end

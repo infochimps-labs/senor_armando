@@ -57,7 +57,6 @@ Gem::Specification.new do |s|
     "lib/senor_armando/tasks/rspec.rake",
     "lib/senor_armando/tasks/yard.rake",
     "lib/use_gemfile_jail.rb",
-    "pkg/senor_armando-0.0.3.gem",
     "senor_armando.gemspec",
     "senor_armando.jpeg",
     "spec/endpoint/echo_spec.rb",
