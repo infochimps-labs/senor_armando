@@ -1,12 +1,12 @@
 GIT
   remote: https://github.com/eventmachine/eventmachine.git
-  revision: 1107730c338892c8281a14b6b2e0802f8d715fb4
+  revision: e510f57cca97bde77fe53c0d6bda842ee29f730f
   specs:
     eventmachine (1.0.0.beta.4)
 
 GIT
   remote: https://github.com/igrigorik/em-http-request.git
-  revision: 1b4e646c65ad33b9a04e18f6bc0fa0c2e54e81f2
+  revision: 26b911a7363fdbfb436fcb758852e2d1c4226e12
   specs:
     em-http-request (1.0.0.beta.4)
       addressable (>= 2.2.3)
@@ -16,7 +16,7 @@ GIT
 
 GIT
   remote: https://github.com/igrigorik/em-synchrony.git
-  revision: 81af523ebad26a6cff2eb2842a4a1691c0c49374
+  revision: 70fede9b7ccdc4e6c8f8cce4f246c0ced53d806e
   specs:
     em-synchrony (0.3.0.beta.1)
       eventmachine (>= 1.0.0.beta.1)
