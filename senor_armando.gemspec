@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = %q{senor_armando}
-  s.version = "0.0.2"
+  s.version = "0.0.3"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = [%q{Infochimps team}]
@@ -57,7 +57,8 @@ Gem::Specification.new do |s|
     "lib/senor_armando/tasks/rspec.rake",
     "lib/senor_armando/tasks/yard.rake",
     "lib/use_gemfile_jail.rb",
-    "pkg/senor_armando-0.0.2.gem",
+    "pkg/senor_armando-0.0.3.gem",
+    "senor_armando.gemspec",
     "senor_armando.jpeg",
     "spec/endpoint/echo_spec.rb",
     "spec/endpoint/proxy_spec.rb",
