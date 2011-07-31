@@ -83,6 +83,67 @@ module Goliath
       self.description = "Missing parameters - please check the documentation at http://infochimps.com/api or email help@infochimps.com"
     end
 
+
+    #
+    # Unauthorized (401) Errors
+    #
+    # User isn't authorized for this call. Why?
+    #
+    # * No API key provided.
+    # * API key isn't found
+    # * API key is found, but disabled or expired
+    #
+    # Spec says: "Similar to 403 Forbidden, but specifically for use when
+    # authentication is possible but has failed or not yet been provided." Even
+    # not specifically stated in HTTP spec, the common practice is 401 - For
+    # authentication error 403 - For authorization error.
+    #
+    # We do NOT respond with unauthorized for the following:
+    #
+    # * API key is fine, but user needs to agree to the license for this call (this is a 403)
+    # * Access to eg a protected twitter user (the data is scrubbed from our DB)
+    #
+
+    class MissingApikeyError < UnauthorizedError
+      self.description = "No _apikey parameter supplied"
+    end
+
+    class ApikeyNotFoundError < UnauthorizedError
+      self.description = "The _apikey supplied is not in our records. Visit http://infochimps.com/api to register, or email help@infochimps.com"
+    end
+
+    #
+    # Payment Required (402) Errors
+    #
+    #
+
+    class AccountBalanceError < PaymentRequiredError
+      self.description = "Account limit hit. Please visit your user dashboard on http://infochimps.com or email help@infochimps.com"
+    end
+
+    #
+    # Forbidden / Rate Limit / NeedsLicense (403) Errors
+    #
+    #   "The request was a legal request, but the server is refusing to respond to
+    #   it. Unlike a 401 Unauthorized response, authenticating will make no
+    #   difference."
+    #
+
+    # Too many calls for their account level
+    class RateLimitExceededError < ForbiddenError
+      self.description = "Rate limit exceeded. Please visit http://infochimps.com to increase your user plan, or email help@infochimps.com"
+    end
+
+    # Too many ip addresses for their account level
+    class IpLimitExceededError < ForbiddenError
+      self.description = "Remote host limit exceeded: too many distinct IPs this hour. Please visit http://infochimps.com to increase your user plan, or email help@infochimps.com"
+    end
+
+    # apikey is valid, but user needs to click a license or put some $$ down to use this call
+    class UserNeedsLicenseError < ForbiddenError
+      self.description = "This api call requires a license agreement. Visit http://infochimps.com/api to register, or email help@infochimps.com"
+    end
+
     #
     # Internal Server Errors (500)
     #
