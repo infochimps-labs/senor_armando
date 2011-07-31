@@ -16,6 +16,8 @@ Jeweler::Tasks.new do |gem|
 
   gem.required_ruby_version = '>=1.9.2'
 
+  gem.executables = []
+
   gem.add_dependency 'yajl-ruby',           "~> 0.8.2"
   gem.add_dependency 'gorillib',            "~> 0.1.1"
   gem.add_dependency 'configliere',         "~> 0.4.7"
