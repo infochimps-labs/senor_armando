@@ -5,7 +5,7 @@ gem   'gorillib',    "~> 0.1.1"
 gem   'configliere', "~> 0.4.7"
 
 gem   'goliath',         :git => 'https://github.com/postrank-labs/goliath.git', :branch => 'new_aroundware'
-gem   'eventmachine',    :git => 'https://github.com/eventmachine/eventmachine.git'
+gem   'eventmachine', "~> 1.0.0.beta.3",    :git => 'https://github.com/eventmachine/eventmachine.git'
 gem   'em-synchrony',    :git => 'https://github.com/igrigorik/em-synchrony.git'
 gem   'em-http-request', :git => 'https://github.com/igrigorik/em-http-request.git'
 

@@ -100,7 +100,7 @@ DEPENDENCIES
   configliere (~> 0.4.7)
   em-http-request!
   em-synchrony!
-  eventmachine!
+  eventmachine (~> 1.0.0.beta.3)!
   goliath!
   gorillib (~> 0.1.1)
   jeweler (~> 1.5.2)
