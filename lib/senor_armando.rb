@@ -14,8 +14,9 @@ module SenorArmando
   end
 
   module Endpoint
-    autoload :Proxy,        'senor_armando/endpoint/proxy'
+    autoload :Base,         'senor_armando/endpoint/base'
     autoload :Echo,         'senor_armando/endpoint/echo'
+    autoload :Proxy,        'senor_armando/endpoint/proxy'
   end
 
   module Rack

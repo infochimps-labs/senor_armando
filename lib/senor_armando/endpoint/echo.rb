@@ -1,6 +1,6 @@
 module SenorArmando
   module Endpoint
-    class Echo < Goliath::API
+    class Echo < SenorArmando::Endpoint::Base
       use Goliath::Rack::Params
 
       def on_headers(env, headers)
