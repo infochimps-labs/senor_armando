@@ -1,12 +1,12 @@
 GIT
   remote: https://github.com/eventmachine/eventmachine.git
-  revision: e510f57cca97bde77fe53c0d6bda842ee29f730f
+  revision: eeb7f129b2881455b92086e727ecda190e7abd4c
   specs:
     eventmachine (1.0.0.beta.4)
 
 GIT
   remote: https://github.com/igrigorik/em-http-request.git
-  revision: 26b911a7363fdbfb436fcb758852e2d1c4226e12
+  revision: 4faca669379100af8f0e6ab77dd92b1a173516a3
   specs:
     em-http-request (1.0.0.beta.4)
       addressable (>= 2.2.3)
@@ -52,7 +52,7 @@ GEM
     em-socksify (0.1.0)
       eventmachine
     git (1.2.5)
-    gorillib (0.1.4)
+    gorillib (0.1.5)
     http_parser.rb (0.5.1)
     http_router (0.9.5)
       rack (>= 1.0.0)
