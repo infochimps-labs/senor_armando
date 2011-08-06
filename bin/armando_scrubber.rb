@@ -4,7 +4,7 @@ require File.join(File.dirname(__FILE__), '../lib/boot')
 Settings[:forwarder] = 'http://localhost:9000'
 
 # Usage:
-#   ruby -r ./lib/boot.rb ./bin/armando_proxy.rb -sv -p 9001
+#   ruby -r ./lib/boot.rb ./bin/armando_scrubber.rb -sv -p 8081
 #
 #   curl -vv 'http://127.0.0.1:9001/unicodesnowmanforyou.com/'
 #
