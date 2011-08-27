@@ -52,10 +52,6 @@ module Goliath
       self.description = "Might not exist, or we might not have it yet. We'll have our robomonkey scrapers check it out."
     end
 
-    class ApiCallNotFoundError < NotFoundError
-      self.description = "No endpoint listening at that path. See listing at http://infochimps.com/api"
-    end
-
     #
     # Bad Request (400) Errors
     #
@@ -83,6 +79,9 @@ module Goliath
       self.description = "Missing parameters - please check the documentation at http://infochimps.com/api or email help@infochimps.com"
     end
 
+    class ApiCallNotFoundError < BadRequestError
+      self.description = "No endpoint listening at that path. See listing at http://infochimps.com/api"
+    end
 
     #
     # Unauthorized (401) Errors
