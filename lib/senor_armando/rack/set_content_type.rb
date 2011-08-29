@@ -23,7 +23,6 @@ module SenorArmando
       FILE_EXTENSION_RE = /\A(.*)\.([\w\-]*)\z/o
 
       def call(env)
-
         if FILE_EXTENSION_RE.match(env['PATH_INFO'])
           path, ext = [$1, $2]
           unless ::Rack::RespondTo.media_types.include?(ext)
@@ -39,6 +38,8 @@ module SenorArmando
 
       def post_process(env, status, headers, body)
         ::Rack::RespondTo.env = env
+
+        # raise Goliath::Validation::BogusFormatError.new('yo what up')
 
         # the respond_to block is what actually triggers the
         # setting of selected_media_type, so it's required

@@ -1,81 +1,78 @@
 require 'rack'
+require 'gorillib/serialization'
+require 'active_support/core_ext/hash/conversions'
+require 'active_support/core_ext/array/conversions'
 
-module Goliath
-  module Rack
-    module Formatters
-      # A XML formatter. Attempts to convert your data into
-      # an XML document.
-      #
-      # @example
-      #   use Goliath::Rack::Formatters::XML
-      class XML
-        include Goliath::Rack::AsyncMiddleware
+module SenorArmando
+  module Formatters
+    # A XML formatter. Attempts to convert your data into
+    # an XML document.
+    #
+    # @example
+    #   use SenorArmando::Formatters::XML
+    class XML
+      attr_reader :opts
 
-        def initialize(app, opts = {})
-          @app = app
-          @opts = opts
-          @opts[:root] ||= 'results'
-          @opts[:item] ||= 'item'
+      def initialize(opts={})
+        @opts = opts.reverse_merge( :root => 'results', :children => 'item' )
+      end
+
+      def applies_format?(headers)
+        headers['Content-Type'] =~ %r{^application/xml}
+      end
+
+      def format(content)
+        content.to_wire.to_xml(opts)
+      end
+
+      def simple_format(content)
+        [
+          xml_header(opts[:root]),
+          to_xml(content),
+          xml_footer(opts[:root]),
+        ].join('')
+      end
+
+    protected
+
+      def to_xml(content)
+        case
+        when content.respond_to?(:each_pair) then hash_to_xml(content)
+        when content.respond_to?(:each)      then array_to_xml(content, @opts[:children])
+        else                                      string_to_xml(content.to_s)
+        end
+      end
+
+      def string_to_xml(content)
+        ::Rack::Utils.escape_html(content.to_s)
+      end
+
+      def hash_to_xml(content)
+        xml_string = ''
+        if content.key?('meta')
+          xml_string += xml_item('meta', content['meta'])
+          content.delete('meta')
         end
 
-        def post_process(env, status, headers, body)
-          if xml_response?(headers)
-            body = [to_xml(body)]
-          end
-          [status, headers, body]
-        end
+        content.each_pair{|key, value| xml_string << xml_item(key, value) }
+        xml_string
+      end
 
-        def xml_response?(headers)
-          headers['Content-Type'] =~ %r{^application/xml}
-        end
+      def array_to_xml(content, item)
+        content.map{|value| xml_item(item, value) }.join('')
+      end
 
-        def to_xml(content, fragment=false)
-          xml_string = ''
-          xml_string << xml_header(@opts[:root]) unless fragment
+      def xml_header(root)
+        "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<#{root}>"
+      end
 
-          xml_string << case(content.class.to_s)
-          when "Hash"   then hash_to_xml(content)
-          when "Array"  then array_to_xml(content, @opts[:item])
-          when "String" then string_to_xml(content)
-          else string_to_xml(content)
-          end
+      def xml_footer(root)
+        "</#{root}>"
+      end
 
-          xml_string << xml_footer(@opts[:root]) unless fragment
-          xml_string
-        end
-
-        def string_to_xml(content)
-          ::Rack::Utils.escape_html(content.to_s)
-        end
-
-        def hash_to_xml(content)
-          xml_string = ''
-          if content.key?('meta')
-            xml_string += xml_item('meta', content['meta'])
-            content.delete('meta')
-          end
-
-          content.each_pair { |key, value| xml_string << xml_item(key, value) }
-          xml_string
-        end
-
-        def array_to_xml(content, item='item')
-          xml_string = ''
-          content.each { |value| xml_string << xml_item(item, value) }
-          xml_string
-        end
-
-        def xml_header(root)
-          "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<#{root}>"
-        end
-
-        def xml_footer(root)
-          "</#{root}>"
-        end
-
-        def xml_item(key, value)
-          "<#{key}>#{to_xml(value, true)}</#{key}>\n"
-        end
+      def xml_item(key, value)
+        key = key.to_s.gsub(/[^\w\-\.]+/, '')
+        "<#{key}>#{to_xml(value)}</#{key}>\n"
       end
     end
   end

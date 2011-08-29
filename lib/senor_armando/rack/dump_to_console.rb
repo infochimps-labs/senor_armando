@@ -40,7 +40,9 @@ module SenorArmando
         $stderr.puts "\n\n"
         env.logger.debug("-"*70)
         env.logger.debug("************* request #{Time.now}:")
-        self.class.dump_to_console(env, 'request headers', env['client-headers']) if  env['client-headers'].present?
+        req_headers = {} ; env.each{|k,v| req_headers[k] = v if (k.to_s =~ /^HTTP_/) }
+        self.class.dump_to_console(env, 'request headers', req_headers)
+        self.class.dump_to_console(env, 'params', env['params'])
         super(env)
       end
 
