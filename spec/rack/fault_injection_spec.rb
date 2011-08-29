@@ -63,7 +63,7 @@ describe ArmandoRaisesHell do
     it 'Raises when given derived error type' do
       with_api(ArmandoRaisesHell) do
         get_api_request(:err_type => "ApiCallNotFoundError") do |c|
-          should_have_response(c, ['{"error":"ApiCallNotFoundError","message":"Not Found: No endpoint listening at that path. See listing at http://infochimps.com/api","status":"404"}', 404])
+          should_have_response(c, ['{"error":"ApiCallNotFoundError","message":"Bad Request: No endpoint listening at that path. See listing at http://infochimps.com/api","status":"400"}', 400])
         end
       end
     end

@@ -21,7 +21,7 @@ module SenorArmando
         dest_params = {:head => env['client-headers'], :query => env.params}
 
         # Set the target host correctly
-        dest_url = PostRank::URI.normalize("#{Settings[:forwarder]}#{env[Goliath::Request::REQUEST_PATH]}")
+        dest_url = PostRank::URI.normalize("#{Settings[:forwarder]}#{env[Goliath::Request::PATH_INFO]}")
 
         env.logger.debug ['proxy', dest_url, dest_params].join("\t")
         [dest_url, dest_params]

@@ -26,7 +26,7 @@ module SenorArmando
       end
 
       def call(env, *args)
-        if env['REQUEST_PATH'] == '/favicon.ico'
+        if env['PATH_INFO'] == '/favicon.ico'
           return [200, {"Last-Modified"=> @@last_mod.to_s, "Expires" => @@expires, "Content-Type"=>"image/vnd.microsoft.icon"}, @@favicon]
         else
           return @app.call(env)
