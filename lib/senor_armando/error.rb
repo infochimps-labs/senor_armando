@@ -144,6 +144,17 @@ module Goliath
     end
 
     #
+    # Not Acceptable Errors (406)
+    #
+    # The resource identified by the request is only capable of generating
+    # response entities which have content characteristics not acceptable
+    # according to the accept headers sent in the request.
+
+    class BogusFormatError < NotAcceptableError
+      self.description = "Bad response format specified"
+    end
+
+    #
     # Internal Server Errors (500)
     #
     # Errors that are not the fault of the user. Apologize and give them the
