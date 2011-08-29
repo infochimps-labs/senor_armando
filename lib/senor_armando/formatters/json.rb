@@ -6,7 +6,7 @@ module SenorArmando
     # encoder that is right for your project.
     #
     # @example
-    #   use Goliath::Rack::Formatters::JSON
+    #   use SenorArmando::Formatters::JSON
     class JSON
 
       def self.applies_format?(headers)
