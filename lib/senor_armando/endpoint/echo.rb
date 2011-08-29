@@ -1,11 +1,10 @@
+require 'senor_armando/rack/capture_headers'
+
 module SenorArmando
   module Endpoint
     class Echo < SenorArmando::Endpoint::Base
-      use Goliath::Rack::Params
-
-      def on_headers(env, headers)
-        env['client-headers'] = headers
-      end
+      use     Goliath::Rack::Params
+      include SenorArmando::Rack::CaptureHeaders
 
       def response(env)
         headers = {
