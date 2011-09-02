@@ -37,11 +37,17 @@ module SenorArmando
       #   https://developer.mozilla.org/En/Server-Side_Access_Control
       #
       #
-      def post_process(env, status, headers, body)
-        callback = env.params['callback'].to_s.strip
+      def call(env)
+        if env.params.key 'callback'
+          env[:jsonp][:callback] =  env.params['callback'].to_s.strip
+          env.params.delete('callback')
+        end
+        super env
+      end
 
-        if jsonp?(callback, headers['Content-Type'])
-          body   = json_to_json_p(callback, body)
+      def post_process(env, status, headers, body)
+        if jsonp?((env[:jsonp][:callback] rescue nil), headers['Content-Type'])
+          body   = json_to_json_p(env[:jsonp][:callback], body)
           headers.merge!({
               'Content-Type'    => 'application/javascript',
               'X-Response-Code' => status.to_s,
