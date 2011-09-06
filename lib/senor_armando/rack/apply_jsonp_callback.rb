@@ -38,16 +38,16 @@ module SenorArmando
       #
       #
       def call(env)
-        if env.params.key 'callback'
-          env[:jsonp][:callback] =  env.params['callback'].to_s.strip
+        if env.params.key? 'callback'
+          env[:jsonp] =  env.params['callback'].to_s.strip
           env.params.delete('callback')
         end
         super env
       end
 
       def post_process(env, status, headers, body)
-        if jsonp?((env[:jsonp][:callback] rescue nil), headers['Content-Type'])
-          body   = json_to_json_p(env[:jsonp][:callback], body)
+        if jsonp?((env[:jsonp] rescue nil), headers['Content-Type'])
+          body   = json_to_json_p(env[:jsonp], body)
           headers.merge!({
               'Content-Type'    => 'application/javascript',
               'X-Response-Code' => status.to_s,
