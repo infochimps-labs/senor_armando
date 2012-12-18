@@ -18,7 +18,7 @@ group :development do
   gem 'yard',      "~> 0.6.7"
   gem 'jeweler',   "~> 1.5.2"
   gem 'rspec',     "~> 2.5.0"
-  gem 'rcov',      ">= 0.9.9"
+  gem 'simplecov'
 end
 
 group :test do

@@ -4,14 +4,14 @@
 # -*- encoding: utf-8 -*-
 
 Gem::Specification.new do |s|
-  s.name = %q{senor_armando}
+  s.name = "senor_armando"
   s.version = "0.0.3"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
-  s.authors = [%q{Infochimps team}]
-  s.date = %q{2011-08-01}
-  s.description = %q{Helper middlewares for a Goliath (http://goliath.io/) app as used in Infochimps Planet of the APIs}
-  s.email = %q{coders@infochimps.org}
+  s.authors = ["Infochimps team"]
+  s.date = "2012-12-18"
+  s.description = "Helper middlewares for a Goliath (http://goliath.io/) app as used in Infochimps Planet of the APIs"
+  s.email = "coders@infochimps.org"
   s.extra_rdoc_files = [
     "LICENSE.txt",
     "README.md"
@@ -31,6 +31,7 @@ Gem::Specification.new do |s|
     "bin/armando_elsewhere.rb",
     "bin/armando_proxy.rb",
     "bin/armando_raises_hell.rb",
+    "bin/armando_scrubber.rb",
     "bin/armando_sleepy.rb",
     "bin/update_gemfile_jail.rb",
     "config/app.example.yaml",
@@ -43,10 +44,25 @@ Gem::Specification.new do |s|
     "lib/senor_armando/endpoint/elastic_search_query.rb",
     "lib/senor_armando/endpoint/proxy.rb",
     "lib/senor_armando/error.rb",
+    "lib/senor_armando/formatters.rb",
+    "lib/senor_armando/formatters/html.rb",
+    "lib/senor_armando/formatters/json.rb",
+    "lib/senor_armando/formatters/jsonp_wrapper.rb",
+    "lib/senor_armando/formatters/old_apeyeye_format_response.rb",
+    "lib/senor_armando/formatters/plist.rb",
+    "lib/senor_armando/formatters/xml.rb",
+    "lib/senor_armando/formatters/yaml.rb",
     "lib/senor_armando/goliath_extensions.rb",
     "lib/senor_armando/plugins/statsd_plugin.rb",
+    "lib/senor_armando/rack/apply_jsonp_callback.rb",
+    "lib/senor_armando/rack/capture_headers.rb",
+    "lib/senor_armando/rack/cors_access_control.rb",
+    "lib/senor_armando/rack/dump_to_console.rb",
     "lib/senor_armando/rack/fault_injection.rb",
+    "lib/senor_armando/rack/favicon.ico",
+    "lib/senor_armando/rack/favicon.rb",
     "lib/senor_armando/rack/force_timeout.rb",
+    "lib/senor_armando/rack/set_content_type.rb",
     "lib/senor_armando/rack/statsd_logger.rb",
     "lib/senor_armando/spec/he_help_me_test.rb",
     "lib/senor_armando/tasks.rb",
@@ -57,25 +73,35 @@ Gem::Specification.new do |s|
     "senor_armando.jpeg",
     "spec/endpoint/echo_spec.rb",
     "spec/endpoint/proxy_spec.rb",
+    "spec/formatters/json_spec.rb",
+    "spec/formatters/plist_spec.rb",
+    "spec/formatters/xml_spec.rb",
+    "spec/formatters/yaml_spec.rb",
     "spec/goliath_extensions_spec.rb",
     "spec/hi_level_spec.rb",
     "spec/rack/fault_injection_spec.rb",
     "spec/rack/force_timeout_spec.rb",
+    "spec/rack/set_content_type_spec.rb",
     "spec/spec_helper.rb"
   ]
-  s.homepage = %q{http://github.com/infochimps-labs/senor_armando}
-  s.licenses = [%q{MIT}]
-  s.require_paths = [%q{lib}]
+  s.homepage = "http://github.com/infochimps-labs/senor_armando"
+  s.licenses = ["MIT"]
+  s.require_paths = ["lib"]
   s.required_ruby_version = Gem::Requirement.new(">= 1.9.2")
-  s.rubygems_version = %q{1.8.6}
-  s.summary = %q{Helper middlewares for a Goliath (http://goliath.io/) app as used in Infochimps Planet of the APIs}
+  s.rubygems_version = "1.8.24"
+  s.summary = "Helper middlewares for a Goliath (http://goliath.io/) app as used in Infochimps Planet of the APIs"
   s.test_files = [
     "spec/endpoint/echo_spec.rb",
     "spec/endpoint/proxy_spec.rb",
+    "spec/formatters/json_spec.rb",
+    "spec/formatters/plist_spec.rb",
+    "spec/formatters/xml_spec.rb",
+    "spec/formatters/yaml_spec.rb",
     "spec/goliath_extensions_spec.rb",
     "spec/hi_level_spec.rb",
     "spec/rack/fault_injection_spec.rb",
     "spec/rack/force_timeout_spec.rb",
+    "spec/rack/set_content_type_spec.rb",
     "spec/spec_helper.rb"
   ]
 
@@ -95,7 +121,7 @@ Gem::Specification.new do |s|
       s.add_development_dependency(%q<yard>, ["~> 0.6.7"])
       s.add_development_dependency(%q<jeweler>, ["~> 1.5.2"])
       s.add_development_dependency(%q<rspec>, ["~> 2.5.0"])
-      s.add_development_dependency(%q<rcov>, [">= 0.9.9"])
+      s.add_development_dependency(%q<simplecov>, [">= 0"])
       s.add_runtime_dependency(%q<yajl-ruby>, ["~> 0.8.2"])
       s.add_runtime_dependency(%q<gorillib>, ["~> 0.1.1"])
       s.add_runtime_dependency(%q<configliere>, ["~> 0.4.7"])
@@ -114,7 +140,7 @@ Gem::Specification.new do |s|
       s.add_development_dependency(%q<yard>, ["~> 0.6.7"])
       s.add_development_dependency(%q<jeweler>, ["~> 1.5.2"])
       s.add_development_dependency(%q<rspec>, ["~> 2.5.0"])
-      s.add_development_dependency(%q<rcov>, [">= 0.9.9"])
+      s.add_development_dependency(%q<simplecov>, [">= 0"])
       s.add_development_dependency(%q<spork>, ["~> 0.9.0.rc5"])
       s.add_development_dependency(%q<watchr>, [">= 0"])
     else
@@ -130,7 +156,7 @@ Gem::Specification.new do |s|
       s.add_dependency(%q<yard>, ["~> 0.6.7"])
       s.add_dependency(%q<jeweler>, ["~> 1.5.2"])
       s.add_dependency(%q<rspec>, ["~> 2.5.0"])
-      s.add_dependency(%q<rcov>, [">= 0.9.9"])
+      s.add_dependency(%q<simplecov>, [">= 0"])
       s.add_dependency(%q<yajl-ruby>, ["~> 0.8.2"])
       s.add_dependency(%q<gorillib>, ["~> 0.1.1"])
       s.add_dependency(%q<configliere>, ["~> 0.4.7"])
@@ -149,7 +175,7 @@ Gem::Specification.new do |s|
       s.add_dependency(%q<yard>, ["~> 0.6.7"])
       s.add_dependency(%q<jeweler>, ["~> 1.5.2"])
       s.add_dependency(%q<rspec>, ["~> 2.5.0"])
-      s.add_dependency(%q<rcov>, [">= 0.9.9"])
+      s.add_dependency(%q<simplecov>, [">= 0"])
       s.add_dependency(%q<spork>, ["~> 0.9.0.rc5"])
       s.add_dependency(%q<watchr>, [">= 0"])
     end
@@ -166,7 +192,7 @@ Gem::Specification.new do |s|
     s.add_dependency(%q<yard>, ["~> 0.6.7"])
     s.add_dependency(%q<jeweler>, ["~> 1.5.2"])
     s.add_dependency(%q<rspec>, ["~> 2.5.0"])
-    s.add_dependency(%q<rcov>, [">= 0.9.9"])
+    s.add_dependency(%q<simplecov>, [">= 0"])
     s.add_dependency(%q<yajl-ruby>, ["~> 0.8.2"])
     s.add_dependency(%q<gorillib>, ["~> 0.1.1"])
     s.add_dependency(%q<configliere>, ["~> 0.4.7"])
@@ -185,7 +211,7 @@ Gem::Specification.new do |s|
     s.add_dependency(%q<yard>, ["~> 0.6.7"])
     s.add_dependency(%q<jeweler>, ["~> 1.5.2"])
     s.add_dependency(%q<rspec>, ["~> 2.5.0"])
-    s.add_dependency(%q<rcov>, [">= 0.9.9"])
+    s.add_dependency(%q<simplecov>, [">= 0"])
     s.add_dependency(%q<spork>, ["~> 0.9.0.rc5"])
     s.add_dependency(%q<watchr>, [">= 0"])
   end

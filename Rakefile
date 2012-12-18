@@ -39,7 +39,7 @@ Jeweler::Tasks.new do |gem|
   gem.add_development_dependency 'yard',         "~> 0.6.7"
   gem.add_development_dependency 'jeweler',      "~> 1.5.2"
   gem.add_development_dependency 'rspec',        "~> 2.5.0"
-  gem.add_development_dependency 'rcov',         ">= 0.9.9"
+  gem.add_development_dependency 'simplecov'
   gem.add_development_dependency 'spork',        "~> 0.9.0.rc5"
   gem.add_development_dependency 'watchr'
 
